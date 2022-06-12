@@ -1,26 +1,45 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
 
-function App() {
+import "./App.css";
+
+const useFormField = (initialValue: string = "") => {
+  const [value, setValue] = useState(initialValue);
+  const onChange = React.useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => setValue(e.target.value),
+    []
+  );
+  return { value, onChange };
+};
+
+const App = (): React.ReactElement => {
+  const usernameField = useFormField();
+  const emailField = useFormField();
+  const passwordField = useFormField();
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container">
+      <form onSubmit={handleSubmit}>
+        <h1 className="header">Welcome</h1>
+        <div>
+          <label htmlFor="email">Email</label>
+          <input className="formInput" type="email" id="email" {...emailField} />
+        </div>
+        <div>
+          <label htmlFor="username">Username</label>
+          <input className="formInput" type="username" id="username" {...usernameField} />
+        </div>
+        <div>
+          <label htmlFor="password">Password</label>
+          <input className="formInput" type="password" id="password" {...passwordField} />
+        </div>
+        <button className="submitButton">Submit</button>
+      </form>
     </div>
   );
-}
+};
 
 export default App;
